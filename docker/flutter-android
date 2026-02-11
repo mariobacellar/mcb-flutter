@@ -1,0 +1,38 @@
+FROM alpine:latest
+
+# Definir variáveis de ambiente
+ENV ANDROID_HOME=/opt/android-sdk \
+    PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH" \
+    JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+
+# Instalar dependências básicas
+RUN apk add --no-cache \
+    bash curl unzip git openjdk17 \
+    libc6-compat \
+    && rm -rf /var/cache/apk/*
+
+# Instalar o Android SDK
+RUN mkdir -p "$ANDROID_HOME/cmdline-tools" && cd "$ANDROID_HOME/cmdline-tools" \
+    && curl -fo sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip \
+    && unzip sdk.zip -d "$ANDROID_HOME/cmdline-tools" \
+    && mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest" \
+    && rm sdk.zip
+
+# Aceitar licenças do Android SDK
+RUN yes | sdkmanager --licenses
+
+# Instalar ferramentas do Android SDK necessárias para compilar Flutter
+RUN sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+# Instalar o Flutter SDK
+RUN git clone https://github.com/flutter/flutter.git /opt/flutter --depth 1 \
+    && echo "export PATH=/opt/flutter/bin:$PATH" >> /etc/profile
+
+# Definir PATH para o Flutter
+ENV PATH="/opt/flutter/bin:$PATH"
+
+# Verificar instalação
+RUN flutter doctor
+
+WORKDIR /app
+CMD ["bash"]
