@@ -1,0 +1,40 @@
+# Cache e arquivos de dependências do Dart/Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+web_plugin_registrant.dart
+
+# Pasta de build (Obrigatório ignorar - muito pesado)
+build/
+
+# Arquivos gerados pelo Android
+.gradle/
+local.properties
+**/android/**/generated/
+**/android/gen/
+*.keystore
+*.jks
+
+# Arquivos gerados pelo iOS/macOS
+**/ios/.generated/
+**/ios/Flutter/Ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/ios/ServiceDefinitions.json
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+
+# Logs e arquivos de sistema
+*.log
+.DS_Store
+
+# Configurações de IDEs (VS Code e IntelliJ)
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
